@@ -1,0 +1,163 @@
+<div [@routerTransition]>
+    <p-fieldset legend="GamaLearn LMS" [toggleable]="false">
+      <div class="row" [hidden]="operation!='view'">
+        <div class="col col-sm-12">
+          <div class="card mb-3">
+            <div class="card-header">
+              Books
+              <button class="btn btn-sm pull-right btn-success" title="Add New Book"
+                (click)="detailsForm.reset();open(null)">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="card-body">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                class="table table-striped row-border hover">
+  
+                <thead id="table">
+                  <tr>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Department</th>
+                    <th>Creation Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let _item of list; let i = index">
+                    <td>{{_item['name']}}</td>
+                    <td>{{_item['author']}}</td>
+                    <td>{{_item['department']}}</td>
+                    <td>{{_item['createdDate'] | date}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" title="View Book" (click)="open(_item)">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </button>
+                      &nbsp;
+                      <button class="btn btn-sm btn-danger" title="Delete Book" mwlConfirmationPopover
+                        popoverTitle="Confirm Delete ?" (confirm)="delete(_item,i)"
+                        cancelText="No <i class='fa fa-ban' aria-hidden='true'></i>"
+                        confirmText="Yes <i class='fa fa-check' aria-hidden='true'></i>">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-12" [hidden]="operation=='view'">
+          <form name="detailsForm" #detailsForm="ngForm" class="row" (ngSubmit)="save();" novalidate>
+            <div class="col col-sm-12">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <span [hidden]="operation!='add'">Add New Book</span>
+                  <span [hidden]="operation!='edit'">Edit {{item['name']}}</span>
+                </div>
+                <div class="card-body" style="    padding: 10px;">
+                  <div class="row">
+                    <div class="col-4">
+                      <label>Book Name
+                        <span class="text-danger">*</span>: </label>
+                      <div class="form-group">
+                        <input #Name="ngModel" name="Name" class="form-control" type="text" required
+                          pattern="{{patterns.Alphanumeric}}" [(ngModel)]="item['name']" autofocus />
+                      </div>
+                      <div *ngIf="Name.invalid && (Name.dirty || Name.touched)" class="alert alert-danger">
+                        <div *ngIf="Name.errors?.['required']">
+                          Book Name is required.
+                        </div>
+                        <div *ngIf="Name.errors?.['pattern']">
+                          Book Name is not valid.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <label>Author
+                        <span class="text-danger">*</span>: </label>
+                      <div class="form-group">
+                        <input #author="ngModel" name="author" class="form-control" type="text" required
+                          pattern="{{patterns.Alphanumeric}}" [(ngModel)]="item['author']" autofocus />
+                      </div>
+                      <div *ngIf="author.invalid && (author.dirty || author.touched)" class="alert alert-danger">
+                        <div *ngIf="author.errors?.['required']">
+                            Author is required.
+                        </div>
+                        <div *ngIf="author.errors?.['pattern']">
+                            Author is not valid.
+                        </div>
+                      </div>
+                    </div>
+                      <div class="col-4">
+                        <label>Department
+                          <span class="text-danger">*</span>: </label>
+                        <div class="form-group">
+                          <input #department="ngModel" name="department" class="form-control" department="text" required
+                            pattern="{{patterns.Alphanumeric}}" [(ngModel)]="item['department']" />
+                        </div>
+                        <div *ngIf="department.invalid && (department.dirty || department.touched)" class="alert alert-danger">
+                          <div *ngIf="department.errors?.['required']">
+                            department is required.
+                          </div>
+                          <div *ngIf="department.errors?.['pattern']">
+                            department not valid.
+                          </div>
+                        </div>
+                      </div>
+                        <!-- In Case Of We Have Password
+                      <div class="col-xl-2" style="text-align:center"
+                        [ngStyle]="{'visibility': !item['id'] ? 'hidden' : 'visible' }">
+                        <label>Change Password<span class="text-danger"></span>: </label>
+                        <div class="form-group">
+                          <p-inputSwitch name="changPass" [(ngModel)]="changePass">Change Password
+                            ?
+                          </p-inputSwitch>
+                        </div>
+                      </div>
+                      <div class="col-xl-5" *ngIf="changePass || !item['id']">
+                        <label>Password: </label>
+                        <div class="form-group">
+                          <input #pass="ngModel" name="pass" class="form-control" type="Password"
+                            pattern="{{patterns.Password}}" [(ngModel)]="item['password']" autofocus />
+  
+                          <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="alert alert-danger">
+                            <div *ngIf="pass.errors?.['required'] ">
+                              Password is required.
+                            </div>
+                            <div *ngIf="pass.errors?.['pattern']">
+                              <p><strong> Password is not valid.</strong> </p>
+                              <p>Minimum of 8 characters</p>
+                              <p>At least one Special Character</p>
+                              <p>At least one uppercase</p>
+                              <p>At least one lowercase</p>
+                              <p>At least one digit</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                            -->
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="text-right">
+                    <button type="button" class="btn btn-default" (click)="back();">
+                      <i class="fa fa-chevron-left" aria-hidden="true"></i> Back</button>&nbsp;
+                    <button class="btn btn-success" [disabled]="detailsForm.invalid" type="submit">Save
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </button>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+  
+      </div>
+    </p-fieldset>
+  
+  </div>
+  

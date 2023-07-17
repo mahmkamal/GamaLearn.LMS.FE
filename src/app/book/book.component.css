@@ -1,0 +1,21 @@
+/* /deep/ div.dataTables_wrapper div.dataTables_length select {
+  width: auto;
+  display: inline-block;
+  padding-right: 29px!important;
+} */
+
+.content {
+    min-height: 200px;
+    padding: 12px 0 0!important;
+  }
+  .row{
+    padding-top: 1.5%!important;
+  }
+  .text-right{text-align:right!important}.text-center{text-align:center!important}
+  .alert {margin-top: 0.5%;}
+  
+  /deep/ .confirm-btn-container:not(:first-child) {
+    margin-left: 4px;
+    width: 83px!important;
+  }
+  /deep/ .popover-header {margin-top: -8px!important;}
